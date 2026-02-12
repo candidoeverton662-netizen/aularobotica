@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atos Históricos · Fundo Dourado</title>
+    <!-- Fonte elegante para um toque clássico -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+            background: radial-gradient(circle at 10% 30%, #f9e076, #b4941c); /* dourado profundo */
+            background-color: #c9a42b; /* fallback dourado */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            color: #1e1e1e;
+        }
+
+        .container-dourado {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 250, 210, 0.4); /* véu dourado translúcido */
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 48px 16px 48px 16px;
+            box-shadow: 0 20px 40px rgba(110, 70, 0, 0.35), inset 0 0 30px rgba(255, 215, 0, 0.6);
+            padding: 2rem 2rem 2.8rem;
+            border: 2px solid #ffd966;
+        }
+
+        /* efeito de pergaminho envelhecido + ouro */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 3px double #b8860b;
+            padding-bottom: 0.8rem;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #2c1e0b;
+            text-shadow: 2px 2px 0 #ffbf00, 4px 4px 8px #7c5e1a;
+            word-spacing: 0.3rem;
+        }
+
+        .subtitulo {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #3e2e0f;
+            background: rgba(255, 229, 153, 0.7);
+            display: inline-block;
+            padding: 0.4rem 2rem;
+            border-radius: 40px;
+            box-shadow: inset 0 1px 4px #ffcd7e;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* --- ABAS (estilo clássico e dourado) --- */
+        .abas-historico {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem 0.2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 0.2rem;
+        }
+
+        .aba {
+            background: #f1e5b2;
+            border: 2px solid #b68b40;
+            border-bottom: none;
+            border-radius: 24px 24px 0 0;
+            padding: 0.9rem 2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #3a2c0b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 -2px 5px rgba(160, 120, 20, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to bottom, #ffe8a0, #dbb42c);
+            border-color: #b8860b;
+            margin-bottom: -2px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .aba i { /* ícone decorativo */
+            font-style: normal;
+            color: #4d3e0b;
+            font-size: 1.5rem;
+        }
+
+        .aba:hover {
+            background: #ffd966;
+            border-color: #aa7c2c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px #7a5b1e;
+        }
+
+        .aba.ativa {
+            background: radial-gradient(circle at top, #ffefb0, #e6b422);
+            border-bottom: 2px solid transparent;
+            border-color: #9e7a34 #9e7a34 #ffdd77 #9e7a34;
+            color: #1f1a04;
+            text-shadow: 1px 1px 0 #ffeeaa;
+            box-shadow: 0 -3px 0 #e6b422, 0 6px 12px rgba(184, 115, 51, 0.3);
+            font-weight: 800;
+            border-bottom: 3px solid #ffd700;
+        }
+
+        /* conteúdo das abas */
+        .paineis {
+            background: rgba(255, 252, 215, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 24px 24px 48px 24px;
+            padding: 2.2rem 2rem;
+            border: 2px solid #f5e56b;
+            box-shadow: inset 0 0 25px #ffd78c, 0 10px 20px #5e4a1a;
+            margin-top: 0.8rem;
+        }
+
+        .painel {
+            display: none;
+            animation: aparecer 0.4s ease;
+        }
+
+        .painel.ativo {
+            display: block;
+        }
+
+        @keyframes aparecer {
+            0% { opacity: 0.3; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* cartões dos eventos */
+        .cartao-evento {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .evento-item {
+            background: linear-gradient(145deg, #fffce6, #faeeb3);
+            padding: 1.2rem 2rem;
+            border-left: 12px solid #c5a028;
+            border-radius: 16px 40px 40px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            box-shadow: 5px 5px 0 #7a5c1c, 0 8px 12px rgba(0,0,0,0.1);
+            transition: 0.15s;
+        }
+
+        .evento-item:hover {
+            border-left-width: 16px;
+            border-left-color: #f6c445;
+            background: #fff5cf;
+            transform: scale(1.01);
+        }
+
+        .evento-desc {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #2c1e0b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .evento-ano {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #8b6913;
+            background: #372e0e;
+            padding: 0.3rem 1.1rem;
+            border-radius: 60px;
+            letter-spacing: 3px;
+            box-shadow: inset 0 -2px 0 #e7c14b, 0 4px 0 #3a300c;
+            color: #ffd966;
+            text-shadow: 1px 1px 0 #2c2307;
+            font-feature-settings: "tnum";
+        }
+
+        .sinopse {
+            font-size: 1.25rem;
+            color: #4a3e1f;
+            margin-top: 0.3rem;
+            width: 100%;
+            font-style: italic;
+            border-top: 1px dashed #b6994b;
+            padding-top: 0.6rem;
+        }
+
+        .evento-item .detalhe-icone {
+            font-size: 1.9rem;
+            margin-right: 8px;
+        }
+
+        /* rodapé dourado */
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #352d13;
+            border-top: 1px solid #efd275;
+            padding-top: 1.5rem;
+            font-weight: 600;
+            text-shadow: 0 1px 0 #ffedb0;
+        }
+
+        /* responsividade */
+        @media (max-width: 700px) {
+            h1 { font-size: 2.2rem; }
+            .aba { padding: 0.7rem 1.2rem; font-size: 1rem; }
+            .evento-desc { font-size: 1.4rem; }
+            .evento-ano { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-dourado">
+        <header>
+            <h1>⚜️ ATOS HISTÓRICOS ⚜️</h1>
+            <div class="subtitulo">Os marcos que mudaram o mundo</div>
+        </header>
+
+        <!-- Área das abas douradas -->
+        <div class="abas-historico" id="abaContainer">
+            <div class="aba ativa" data-painel="antiguidade">
+                <i>🏛️</i> Antiguidade
+            </div>
+            <div class="aba" data-painel="medieval">
+                <i>⚔️</i> Medieval
+            </div>
+            <div class="aba" data-painel="moderno">
+                <i>📜</i> Moderno
+            </div>
+            <div class="aba" data-painel="contemporaneo">
+                <i>🌍</i> Contemporâneo
+            </div>
+        </div>
+
+        <!-- Paineis com eventos e anos -->
+        <div class="paineis">
+            <!-- PAINEL 1 - ANTIGUIDADE -->
+            <div class="painel ativo" id="painel-antiguidade">
+                <div class="cartao-evento">
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🔺</span> Criação do Código de Hamurábi
+                        </span>
+                        <span class="evento-ano">1750 a.C.</span>
+                        <div class="sinopse">Um dos primeiros conjuntos de leis escritas — "olho por olho".</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🏺</span> Democracia Ateniense
+                        </span>
+                        <span class="evento-ano">508 a.C.</span>
+                        <div class="sinopse">Clístenes implanta a democracia em Atenas, voz ao cidadão.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">⚖️</span> Lei das XII Tábuas
+                        </span>
+                        <span class="evento-ano">450 a.C.</span>
+                        <div class="sinopse">Base do direito romano, inscrita em bronze no Fórum.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🦁</span> Conquistas de Alexandre
+                        </span>
+                        <span class="evento-ano">334 a.C.</span>
+                        <div class="sinopse">Início da campanha que uniu Oriente e Ocidente.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL 2 - MEDIEVAL -->
+            <div class="painel" id="painel-medieval">
+                <div class="cartao-evento">
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">📖</span> Criação do Alcorão (compilação)
+                        </span>
+                        <span class="evento-ano">632</span>
+                        <div class="sinopse">Unificação dos textos revelados ao profeta Maomé.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">👑</span> Coroação de Carlos Magno
+                        </span>
+                        <span class="evento-ano">800</span>
+                        <div class="sinopse">Imperador do Ocidente, renascimento carolíngio.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">⛪</span> Cisma do Oriente
+                        </span>
+                        <span class="evento-ano">1054</span>
+                        <div class="sinopse">Separação entre Igreja Católica e Ortodoxa.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">📜</span> Magna Carta
+                        </span>
+                        <span class="evento-ano">1215</span>
+                        <div class="sinopse">Limitação do poder real, base do constitucionalismo.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL 3 - MODERNO (séc. XV–XVIII) -->
+            <div class="painel" id="painel-moderno">
+                <div class="cartao-evento">
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">⚓</span> Chegada de Colombo à América
+                        </span>
+                        <span class="evento-ano">1492</span>
+                        <div class="sinopse">Início da era colonial e intercâmbio global.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">95️⃣</span> As 95 Teses de Lutero
+                        </span>
+                        <span class="evento-ano">1517</span>
+                        <div class="sinopse">Reforma Protestante, rompimento com a Igreja Católica.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">👑</span> Execução de Maria Stuart
+                        </span>
+                        <span class="evento-ano">1587</span>
+                        <div class="sinopse">Conflitos religiosos e políticos na Inglaterra.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">📘</span> Enciclopédia de Diderot
+                        </span>
+                        <span class="evento-ano">1751</span>
+                        <div class="sinopse">Difusão do pensamento iluminista.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL 4 - CONTEMPORÂNEO (séc. XIX–XX) -->
+            <div class="painel" id="painel-contemporaneo">
+                <div class="cartao-evento">
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🗽</span> Declaração de Independência (EUA)
+                        </span>
+                        <span class="evento-ano">1776</span>
+                        <div class="sinopse">Formação dos Estados Unidos da América.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🇫🇷</span> Queda da Bastilha
+                        </span>
+                        <span class="evento-ano">1789</span>
+                        <div class="sinopse">Revolução Francesa — Liberdade, Igualdade, Fraternidade.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">⚓</span> Abolição da Escravatura no Brasil
+                        </span>
+                        <span class="evento-ano">1888</span>
+                        <div class="sinopse">Lei Áurea, assinada pela Princesa Isabel.</div>
+                    </div>
+                    <div class="evento-item">
+                        <span class="evento-desc">
+                            <span class="detalhe-icone">🕊️</span> Declaração Universal dos Direitos Humanos
+                        </span>
+                        <span class="evento-ano">1948</span>
+                        <div class="sinopse">Marco ético pós-guerra, direitos inalienáveis.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            ✦  Fundo dourado da história — grandes atos, memória eterna  ✦
+        </footer>
+    </div>
+
+    <!-- Script para alternar abas com elegância -->
+    <script>
+        (function() {
+            "use strict";
+
+            const abas = document.querySelectorAll('.aba');
+            const paineis = {
+                antiguidade: document.getElementById('painel-antiguidade'),
+                medieval: document.getElementById('painel-medieval'),
+                moderno: document.getElementById('painel-moderno'),
+                contemporaneo: document.getElementById('painel-contemporaneo')
+            };
+
+            // remove todas as classes ativas das abas e paineis
+            function desativarTodos() {
+                abas.forEach(aba => {
+                    aba.classList.remove('ativa');
+                });
+                Object.values(paineis).forEach(painel => {
+                    if (painel) painel.classList.remove('ativo');
+                });
+            }
+
+            // ativar aba e painel correspondente
+            function ativarPainel(alvoId) {
+                desativarTodos();
+
+                // ativa aba correta
+                abas.forEach(aba => {
+                    const painelRef = aba.getAttribute('data-painel');
+                    if (painelRef === alvoId) {
+                        aba.classList.add('ativa');
+                    }
+                });
+
+                // ativa painel
+                const painelAlvo = paineis[alvoId];
+                if (painelAlvo) {
+                    painelAlvo.classList.add('ativo');
+                }
+            }
+
+            // evento de clique nas abas
+            abas.forEach(aba => {
+                aba.addEventListener('click', function(e) {
+                    const painelId = this.getAttribute('data-painel');
+                    if (painelId) {
+                        ativarPainel(painelId);
+                    }
+                });
+            });
+
+            // Garantia: painel antiguidade como inicial (caso algo dessincronize)
+            const abaAtiva = document.querySelector('.aba.ativa');
+            if (!abaAtiva) {
+                ativarPainel('antiguidade');
+            } else {
+                // se a aba ativa existe, mas painel não corresponde? Asseguramos sincronia
+                const painelAtivo = document.querySelector('.painel.ativo');
+                const idDaAbaAtiva = abaAtiva.getAttribute('data-painel');
+                if (!painelAtivo || painelAtivo.id !== `painel-${idDaAbaAtiva}`) {
+                    ativarPainel(idDaAbaAtiva);
+                }
+            }
+        })();
+    </script>
+
+    <!-- ícones decorativos: os "i" dentro das abas já tem caracteres, nenhum recurso externo necessário -->
+    <!-- O site é totalmente autosuficiente, fundo dourado radiante e abas com anos -->
+</body>
+</html>
